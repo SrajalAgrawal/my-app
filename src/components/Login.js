@@ -1,11 +1,22 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import api from "../API/api";
 import { useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
+import { Card } from "react-bootstrap";
+
 
 export const Login = () => {
-  const captchaRef = useRef(null);
+
   const navigate = useNavigate();
+
+  useEffect(()=>{
+      if(localStorage.getItem("user")){
+        navigate("/dashboard/profile", { replace: true });
+      }
+  },[]);
+
+
+  // const captchaRef = useRef(null);
   const Login = async (event) => {
     event.preventDefault();
     // const token = captchaRef.current.getValue();
@@ -15,8 +26,8 @@ export const Login = () => {
     //   if (res.data.success) {
         api.login(event).then((res) => {
           if (res && res.data.access_token && res.data.user.email_verified_at) {
-            console.log("1");
-            navigate("/dashboard", { replace: true });
+            console.log(res.data.access_token);
+            navigate("/dashboard/profile", { replace: true });
           }
           else if (res && res.data.access_token) {
             console.log("2");
@@ -31,6 +42,8 @@ export const Login = () => {
   };
 
   return (
+    <Card style={{ width: '25rem' }} >
+      <h2>Login</h2>
     <div className="form">
       <form onSubmit={Login}>
         <div className="mb-3">
@@ -54,5 +67,6 @@ export const Login = () => {
         </div>
       </form>
     </div>
+    </Card>
   );
 };

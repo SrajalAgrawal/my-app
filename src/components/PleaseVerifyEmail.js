@@ -1,21 +1,16 @@
 import React from 'react';
 import { useNavigate } from "react-router-dom";
 import api from "../API/api";
+import { useSelector } from 'react-redux';
 
 export const PleaseVerifyEmail = () => {
 
     const navigate = useNavigate(); 
     const Send = async () => {
-        // event.preventDefault();
-        await api.resendemail().then((res) => {
-            // if (res && res.data.access_token && res.data.user.email_verified_at) {
-            //   console.log("1");
-            //   navigate("/dashboard", { replace: true });
-            // }
-        });
+        await api.resendemail().then(() => {});
     }
-
-
+    let user = useSelector((state) => state.user);
+    const email = user.data.email;
     return (
         <div>
             Please Check Your Email for Email-Verification.
@@ -32,4 +27,3 @@ export const PleaseVerifyEmail = () => {
         </div>
     )
 }
-

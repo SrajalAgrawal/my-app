@@ -1,5 +1,5 @@
 import axios from "axios";
-// import moment from "moment";
+import moment from "moment";
 
 const api_url = "http://localhost:8000/";
 export default new (class AuthService {
@@ -21,7 +21,7 @@ export default new (class AuthService {
         try {
             const res = await axios.post(api_url + "register", data, config);
             if (res.data.access_token) {
-                localStorage.setItem("user", JSON.stringify(res.data));
+                localStorage.setItem("user", JSON.stringify(res.data.access_token));
             }
             return res;
         } catch (err) {
@@ -44,7 +44,7 @@ export default new (class AuthService {
         try {
             const res = await axios.post(api_url + "login", data, config);
             if (res.data.access_token) {
-                localStorage.setItem("user", JSON.stringify(res.data));
+                localStorage.setItem("user", JSON.stringify(res.data.access_token));
             }
             return res;
         } catch (err) {
@@ -72,12 +72,14 @@ export default new (class AuthService {
     }
 
     async logout() {
-        let token = JSON.parse(localStorage.getItem("user")).access_token;
+        let Token = JSON.parse(localStorage.getItem("user"));
+        console.log(Token);
         let data = null;
         let config = {
-          params: {},
+          params: {
+            token: Token
+          },
           headers: {
-            Authorization: "Bearer " + token,
           },
         };
         try {
@@ -85,7 +87,8 @@ export default new (class AuthService {
           localStorage.removeItem("user");
           return res;
         } catch (err) {
-          console.log(err);
+            console.log(JSON.stringify(err))
+            console.log(err);
         }
     }
 
@@ -110,7 +113,7 @@ export default new (class AuthService {
     }
 
     async resendemail() {
-        let token = JSON.parse(localStorage.getItem("user")).access_token;
+        let token = JSON.parse(localStorage.getItem("user"));
         // console.log(token);
         let data = null;
         let config = {
@@ -120,11 +123,7 @@ export default new (class AuthService {
           },
         };
         try {
-          const res = await axios.post(
-            "http://localhost:8000/email/request-verification",
-            data,
-            config
-          );
+          const res = await axios.post(api_url + "email/request-verification", data, config );
           console.log(res);
           return res;
         } catch (err) {
@@ -132,24 +131,19 @@ export default new (class AuthService {
         }
     }
 
-    async resetpasswordrequest() {
-        let Email = JSON.parse(localStorage.getItem("user")).user.email;
-        console.log(Email);
+    async resetpasswordrequest(email) {
+        console.log(email);
         let data = null;
         let config = {
           params: {
-            email: Email,
+            email: email,
           },
           headers: {
             // Authorization: "Bearer " + token,
           },
         };
         try {
-          const res = await axios.post(
-            "http://localhost:8000/password/reset-request",
-            data,
-            config
-          );
+          const res = await axios.post(api_url + "/password/reset-request", data, config );
           return res;
         } catch (err) {
           console.log(err);
@@ -181,5 +175,159 @@ export default new (class AuthService {
           console.log(JSON.stringify(err))
         }
     }
+
+
+
+    async me() {
+      let token = JSON.parse(localStorage.getItem("user"));
+      let data = null;
+      let config = {
+        params: {},
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      };    
+      const res = await axios.post(api_url + "user", data, config);
+      return res;
+    }
+
+    async getAllUsers(page,search) {
+      let token = JSON.parse(localStorage.getItem("user"));
+      let data = null;
+      let config = {
+        params: {
+          page,
+          search
+        },
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      };    
+      const res = await axios.post(api_url + "users", data, config);
+      return res;
+    }
+
+    async createTask(title,due_date,desc, to) {
+      let token = JSON.parse(localStorage.getItem("user"));
+      let data = null;
+      let config = {
+        params: {
+          title,
+          due_date: moment(due_date).utc().format("YYYY-MM-DD HH:mm:ss"),
+          desc,
+          assigned_to: to,
+        },
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      };
+      try {
+        const res = await axios.post(api_url + "createTask", data, config);
+        return res;
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    async getTasks(page,search,sort) {
+      let token = JSON.parse(localStorage.getItem("user"));
+  
+      let data = null;
+      let config = {
+        params: {
+          page,
+          search,
+          sort,
+        },
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      };
+      const res = await axios.post(api_url + "showTasks", data, config);
+      return res;
+    }
+
+    async getAllTasks(page,search,sort) {
+      let token = JSON.parse(localStorage.getItem("user"));
+  
+      let data = null;
+      let config = {
+        params: {
+          page,
+          search,
+          sort,
+        },
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      };
+        let res = await axios.post(api_url + "showAllTasks", data, config);
+        return res;
+    }
+
+    async stats(type) {
+      let token = JSON.parse(localStorage.getItem("user"));
+  
+  
+      let data = null;
+      let config = {
+        params: {
+          type
+        },
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      };
+  
+      try {
+        const res = await axios.post(api_url + "stats", data, config);
+        return res;
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    async changeStatus(task, stat) {
+      let token = JSON.parse(localStorage.getItem("user"));
+      let data = null;
+      let config = {
+        params: {
+          task: task.id,
+          status_change_to: stat,
+        },
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      };
+      try {
+        const res = await axios.post(api_url + "changeStatus", data, config);
+        return res;
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    async changeTaskStatusBulk(idArray,bulkAction) {
+      let token = JSON.parse(localStorage.getItem("user"));
+      let data = null;
+      let config = {
+        params: {
+          idArray,
+          bulkAction
+        },
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      };
+      try {
+        const res = await axios.post( api_url + "changeTaskStatusBulk", data, config);
+        console.log(res);
+        return res;
+  
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
 });
 

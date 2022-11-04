@@ -12,7 +12,7 @@ export const EmailVerification = () => {
    
     let Verify = async()=>{
         await api.verifyEmail(token);
-        navigate("/Dashboard", { replace: true });
+        navigate("/Dashboard/profile", { replace: true });
     }
   return (
     <div>

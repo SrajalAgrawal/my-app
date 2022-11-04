@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import api from "../API/api";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -6,13 +6,12 @@ import { useState } from "react";
 export const ResetPassword = () => {
     const navigate = useNavigate();
     const [match,setmatch] = useState(false);
-
+    const urlToken = new URL (window.location.href);
+    const token = urlToken.searchParams.get('token');
+    const email = urlToken.searchParams.get('email');
+    
     const reset = async(event)=>{
         event.preventDefault();
-        const urlToken = new URL (window.location.href);
-        const token = urlToken.searchParams.get('token');
-        const email = urlToken.searchParams.get('email');
-    
         if (event.target[0].value !== event.target[1].value) {
             setmatch(true);
             return;
@@ -24,17 +23,17 @@ export const ResetPassword = () => {
         let password_confirm = event.target[1].value;
         let res = await api.resetPassword(email,password,password_confirm,token);
         if (res) {
-            navigate("/Dashboard", { replace: true });
+            navigate("/Dashboard/profile", { replace: true });
         }
     };
 
-    const Alert = (props) => {
-        return <div style={{ color: "red" }}>Password Did Not Match</div>;
+    const Alert = () => {
+        return <div style={{ color: "red" }}>Password did not match</div>;
     };
 
   return (
     <div>
-        Email : {JSON.parse(localStorage.getItem("user")).user.email}
+        Email : {email}
         <div className="form">
         <form onSubmit={reset}>
             <div className="mb-3">
