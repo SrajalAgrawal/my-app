@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
-import { Dropdown, DropdownButton, Button, NavDropdown} from "react-bootstrap";
+import { Dropdown, DropdownButton } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import api from "../API/api";
 import { useState } from "react";
 import { getTasks } from "../reducer/taskSlice";
-import { getAllTasks } from "../reducer/allTasksSlice";
 import { setPage } from "../reducer/paginationSlice";
 import { Navbarm } from "./Navbarm";
 import { Pagination } from "./Pagination";
@@ -19,9 +18,7 @@ export const Tasks = () => {
     let dispatch = useDispatch();
 
     const [showPage, setShowPage] = useState(false);
-    //   const [total, setTotal] = useState(0);
-
-    // const [searchParam] = useState(["title", "desc", "status","assigned_to_name","assigned_by_name"]);
+    const [checkedState, setCheckedState] = useState([]);
 
     useEffect(() => {
         dispatch(setPage(1));
@@ -29,7 +26,6 @@ export const Tasks = () => {
             .then((res) => {
                 setShowPage(true);
             });
-        console.log("tasks", paginator.page);
     }, []);
 
     let progress = async (stat, task) => {
@@ -41,44 +37,18 @@ export const Tasks = () => {
 
     let handleSort = (sort) => {
         dispatch(setSort(sort));
-        dispatch(getTasks());
-        // dispatch(setSort(sort));
         dispatch(setPage(1));
+        dispatch(getTasks());
     };
+    
     let handleBulk = async(stat) => {
-        checkedState.map((check) => {
-            console.log("hurray",check);
-          });
           await api.changeTaskStatusBulk(checkedState, stat);
-            dispatch(getTasks())
+            dispatch(getTasks());
     };
-
-
-      const [checkedState, setCheckedState] = useState([]);
-    //   const [showBulk, setShowBulk] = useState(false);
 
     let handleCheck = (event) => {
         let id = event.target.id;
-        console.log("0",id);
         setCheckedState((checkedState) => [...checkedState, id]);
-
-        // if (checkedState.includes(id)) {
-        //   let copy = [...checkedState];
-        //   var index = copy.indexOf(event.target.id);
-        //   copy.splice(index, 1);
-        //   setCheckedState((checkedState) => copy);
-        //   console.log(checkedState);
-        //   console.log("1",id);
-    
-        //   if (checkedState.length == 1) {
-        //     setShowBulk(false);
-        //   }
-        // } else {
-        //   setCheckedState((checkedState) => [...checkedState, id]);
-        // console.log("2",id);
-
-        //   setShowBulk(true);
-        // }
       };
 
     return (
@@ -86,7 +56,6 @@ export const Tasks = () => {
             <Navbarm />
                 <div class="container py-5 h-100">
                     <div class="row d-flex justify-content-center align-items-center h-100">
-                        {/* <div class="col col-lg-9 col-xxl-12"> */}
                             <div class="card rounded-3">
                                 <div class="card-body p-4">
 
@@ -113,7 +82,6 @@ export const Tasks = () => {
                                     <table class="table mb-4">
                                         <thead>
                                             <tr>
-                                                {/* <th scope="col">No.</th> */}
                                                 <th scope="col"></th>
                                                 <th scope="col">Task</th>
                                                 <th scope="col">Description</th>
@@ -130,7 +98,6 @@ export const Tasks = () => {
                                                     tasks.data.data.map((task) => (
 
                                                             <tr>
-                                                                {/* <th scope="row">1</th> */}
                                                                 <td>
                                                                     <div style={{ marginRight: "10px" }}>
                                                                         <input
@@ -162,7 +129,6 @@ export const Tasks = () => {
                                     {showPage && <Pagination type="task" last={tasks.data.last_page} />}
                                 </div>
                             </div>
-                        {/* </div> */}
                     </div>
                 </div>
         </div>

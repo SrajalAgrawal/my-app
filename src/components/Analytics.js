@@ -4,18 +4,13 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { Card } from "react-bootstrap";
 import { getTasks } from "../reducer/taskSlice";
-import { useState } from "react";
 
 export const Analytics = () => {
     const task = useSelector((state) => state.task);
     let dispatch = useDispatch();
-    // const [showPage, setShowPage] = useState(false);
 
     useEffect(() => {
         dispatch(getTasks());
-            // .then((res) => {
-            //     setShowPage(true);
-            // });
     }, []);
 
     const optionsTo = {

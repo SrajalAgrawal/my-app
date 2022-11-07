@@ -10,7 +10,6 @@ import api from "../API/api"
 export const Users = () => {
 
     let users = useSelector((state) => state.allUsers);
-    let user = useSelector((state) => state.user);
     const [showPage, setShowPage] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [assigned, setAssigned] = useState(false);
@@ -34,15 +33,15 @@ export const Users = () => {
         let date = event.target[1].value;
         let desc = event.target[2].value;
         let res = await api.createTask(title,date,desc,to);
-        console.log("task assigned",res);
+        // console.log("task assigned",res);
         if(res.data.title){
          setAssigned(true);
         }
     }
   
     let handleClose=()=>{
-    setShowModal(false);
-    setAssigned(false);
+        setShowModal(false);
+        setAssigned(false);
     }
 
     return (
@@ -50,32 +49,8 @@ export const Users = () => {
 
         <div>
             <Navbarm />
-            {/* <div>
-                <h2>Users</h2>
-            </div>
-
-            {showPage ? (
-                users.data.data.map((user) => (
-                    <div class="card">
-                        <h5 class="card-header">ID: {user.id}</h5>
-                        <div class="card-body">
-                            <h5 class="card-title">{user.name}   
-                            <a onClick={() => {setShowModal(true);setUserTo(user)}} class="btn btn-primary" >Assign Task</a>
-                            </h5>
-                            <p class="card-text">{user.email}</p>
-                        </div>
-                    </div>
-                ))
-            ) : (
-                <h2>Loading....</h2>
-            )}
-            {showPage && <Pagination type="user" last={users.data.last_page} />} */}
-        
-                
-
             <div class="container py-5 h-100">
                     <div class="row d-flex justify-content-center align-items-center h-100">
-                        {/* <div class="col col-lg-9 col-xxl-12"> */}
                             <div class="card rounded-3">
                                 <div class="card-body p-4">
                                     <h4 class="text-center my-3 pb-3">Users</h4>
@@ -95,7 +70,6 @@ export const Users = () => {
 
                                                             <tr>
                                                                 <td>{user.id}</td>
-                                                                {/* <th scope="row">{user.id}</th> */}
                                                                 <td>{user.name}</td>
                                                                 <td>{user.email}</td>
                                                                 <td>
@@ -112,7 +86,6 @@ export const Users = () => {
                                     {showPage && <Pagination type="user" last={users.data.last_page} />}
                                 </div>
                             </div>
-                        {/* </div> */}
                     </div>
                 </div>
         

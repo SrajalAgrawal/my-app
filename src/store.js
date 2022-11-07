@@ -4,7 +4,6 @@ import allUsersReducer from "./reducer/allUsersSlice";
 import searchReducer from "./reducer/searchSlice";
 import paginationReducer from "./reducer/paginationSlice";
 import taskReducer from "./reducer/taskSlice";
-import allTasksReducer from "./reducer/allTasksSlice";
 
 
 export const store = configureStore({
@@ -12,7 +11,6 @@ export const store = configureStore({
     user : userReducer,
     allUsers : allUsersReducer,
     task : taskReducer,
-    allTasks: allTasksReducer,
     search : searchReducer,
     paginator : paginationReducer,
   },

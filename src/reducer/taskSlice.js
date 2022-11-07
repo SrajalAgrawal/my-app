@@ -2,10 +2,9 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../API/api";
 export const getTasks = createAsyncThunk( "task/getTasks", async (page,{ dispatch,getState }) => {
     const state = getState();
-    let t = await api.getTasks(page,state.search.data,state.search.sort);
-    console.log("taskslice",t);
+    let tasks = await api.getTasks(page,state.search.data,state.search.sort);
+
     api.stats('to').then((res)=>{
-        console.log("to",res);
       dispatch(setCountAssignedTo(res.data[0]));
       dispatch(setCountInProgressTo(res.data[1]));
       dispatch(setCountCompletedTo(res.data[2]));
@@ -15,7 +14,7 @@ export const getTasks = createAsyncThunk( "task/getTasks", async (page,{ dispatc
       dispatch(setCountInProgressBy(res.data[1]));
       dispatch(setCountCompletedBy(res.data[2]));
     })
-    return t.data;
+    return tasks.data;
   }
 );
 

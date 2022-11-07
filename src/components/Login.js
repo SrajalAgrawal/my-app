@@ -1,20 +1,32 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef} from "react";
+import { useDispatch } from "react-redux";
 import api from "../API/api";
 import { useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 import { Card } from "react-bootstrap";
-
+import { getUser } from "../reducer/userSlice";
 
 export const Login = () => {
 
   const navigate = useNavigate();
 
-  useEffect(()=>{
-      if(localStorage.getItem("user")){
+  // useEffect(()=>{
+  //     if(localStorage.getItem("user")){
+  //       navigate("/dashboard/profile", { replace: true });
+  //     }
+  // },[]);
+
+  useEffect(() => { init();}, []);
+
+  let dispatch = useDispatch();
+  async function init() {
+    await dispatch(getUser()).then((res) => {
+      if (res.type === "user/getUser/fulfilled") {
+        console.log("navbar",res);
         navigate("/dashboard/profile", { replace: true });
       }
-  },[]);
-
+    });
+  }
 
   // const captchaRef = useRef(null);
   const Login = async (event) => {

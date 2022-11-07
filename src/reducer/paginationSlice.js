@@ -3,7 +3,6 @@ export const paginationSlice = createSlice({
     name:"pagination",
     initialState:{
         page: 1,
-        // perPage: 10,
     },
 
     reducers: {

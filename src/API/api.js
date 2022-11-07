@@ -14,7 +14,6 @@ export default new (class AuthService {
                 name: n,
                 email: e,
                 password: p,
-                // role: 1,
             },
         };
 
@@ -26,7 +25,6 @@ export default new (class AuthService {
             return res;
         } catch (err) {
             console.log(err.response);
-            // console.log(JSON.stringify(err))
         }
     }
 
@@ -139,7 +137,6 @@ export default new (class AuthService {
             email: email,
           },
           headers: {
-            // Authorization: "Bearer " + token,
           },
         };
         try {
@@ -172,7 +169,7 @@ export default new (class AuthService {
           return res;
         } catch (err) {
           console.log(err);
-          console.log(JSON.stringify(err))
+          // console.log(JSON.stringify(err))
         }
     }
 
@@ -307,12 +304,12 @@ export default new (class AuthService {
       }
     }
 
-    async changeTaskStatusBulk(idArray,bulkAction) {
+    async changeTaskStatusBulk(idArr,bulkAction) {
       let token = JSON.parse(localStorage.getItem("user"));
       let data = null;
       let config = {
         params: {
-          idArray,
+          idArr,
           bulkAction
         },
         headers: {

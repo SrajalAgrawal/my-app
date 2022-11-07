@@ -1,16 +1,15 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect  } from "react";
 import _ from "lodash";
 import { useNavigate } from "react-router";
 import { Container, Navbar, Nav} from "react-bootstrap";
 import api from "../API/api";
 import { useDispatch,useSelector } from "react-redux";
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import { getUser, removeUser, setAdmin } from "../reducer/userSlice";
+import { getUser, removeUser } from "../reducer/userSlice";
 import { removeSearch, setSearch } from "../reducer/searchSlice";
 import { setPage } from "../reducer/paginationSlice";
-import { getTasks, removeTasks} from "../reducer/taskSlice";
-import { getAllTasks, removeAllTasks } from "../reducer/allTasksSlice"; 
-import { removeAllUsers, getAllUsers } from "../reducer/allUsersSlice";
+import { getTasks } from "../reducer/taskSlice";
+import { getAllUsers } from "../reducer/allUsersSlice";
 
 
 export const Navbarm = () => {
@@ -22,13 +21,9 @@ export const Navbarm = () => {
   const Logout = async () => {
     try {
       await api.logout();
-      dispatch(setAdmin(false));
-      dispatch(removeUser());
-      // dispatch(removeTasks());
-      // dispatch(removeAllUsers());
-      // dispatch(removeAllTasks());
-      dispatch(removeSearch());
       navigate("/", { replace: true });
+      dispatch(removeUser());
+      dispatch(removeSearch());
       localStorage.removeItem("user");
     } catch (err) {
       console.log(err);
@@ -43,7 +38,7 @@ export const Navbarm = () => {
   async function init() {
     await dispatch(getUser()).then((res) => {
       if (res.type === "user/getUser/rejected") {
-        console.log("navbar",res);
+        // console.log("navbar",res);
         navigate("/Login", { replace: true });
       }
     });
@@ -53,14 +48,13 @@ export const Navbarm = () => {
     _.debounce(() => {
       dispatch(getTasks(1));
       dispatch(getAllUsers(1));
-      dispatch(getAllTasks(1));
       dispatch(setPage(1));
     }, 500),
     []
   );
 
   let handleSearch = (event) => {
-    console.log(event.target.value);
+    // console.log(event.target.value);
     dispatch(setSearch(event.target.value));
     dispatch(setPage(1));
     debouncedGet();
@@ -81,7 +75,6 @@ export const Navbarm = () => {
             <NavDropdown title={user.data.name} id="basic-nav-dropdown">
               <NavDropdown.Item href="/dashboard/profile">Profile</NavDropdown.Item>
               <NavDropdown.Item onClick={ResetPassword}>Reset Password</NavDropdown.Item>
-              {/* <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item> */}
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={Logout}>Logout</NavDropdown.Item>
             </NavDropdown>

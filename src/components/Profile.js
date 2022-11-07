@@ -1,19 +1,13 @@
-import React, {useEffect} from 'react';
-import { useNavigate } from "react-router-dom";
-import { Card, Button, Offcanvas } from "react-bootstrap";
-import userSlice from "../reducer/userSlice";
-import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from 'react';
+import { Card } from "react-bootstrap";
+import { useSelector } from "react-redux";
 import { Navbarm } from "./Navbarm";
 import moment from "moment";
 import { Analytics } from './Analytics';
 
 export const Profile = () => {
 
-    // const navigate = useNavigate();
-    let dispatch = useDispatch();
     let user = useSelector((state) => state.user);
-    //console.log(user.data.email); 
     return (
         <div>
             <Navbarm />

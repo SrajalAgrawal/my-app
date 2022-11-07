@@ -15,8 +15,6 @@ export const Register = () => {
     const Register = async (event) => {
         event.preventDefault();
         let res = await api.register(event);
-        // console.log(JSON.stringify(res));
-        // console.log(res.data);
         if (res.data) {
         navigate("/pleaseverifyemail", { replace: true });
         }        
