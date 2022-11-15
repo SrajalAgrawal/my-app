@@ -5,6 +5,7 @@ export const getTasks = createAsyncThunk( "task/getTasks", async (page,{ dispatc
     let tasks = await api.getTasks(page,state.search.data,state.search.sort);
 
     api.stats('to').then((res)=>{
+    //   console.log("dsfrf",res.data[1]);
       dispatch(setCountAssignedTo(res.data[0]));
       dispatch(setCountInProgressTo(res.data[1]));
       dispatch(setCountCompletedTo(res.data[2]));

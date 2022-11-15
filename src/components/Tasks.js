@@ -31,7 +31,7 @@ export const Tasks = () => {
     let progress = async (stat, task) => {
         if (task.status !== stat) {
             await api.changeStatus(task, stat);
-            dispatch(getTasks());
+            dispatch(getTasks(paginator.page));
         }
     };
 
@@ -40,7 +40,7 @@ export const Tasks = () => {
         dispatch(setPage(1));
         dispatch(getTasks());
     };
-    
+
     let handleBulk = async(stat) => {
           await api.changeTaskStatusBulk(checkedState, stat);
             dispatch(getTasks());
@@ -64,17 +64,17 @@ export const Tasks = () => {
                                     <div style={{ display: "flex" }}>
                                         <div style={{ width: "100%" }}>
                                             <DropdownButton id="dropdown-basic-button" title="Bulk Action">
-                                                <Dropdown.Item onClick={() => {handleBulk("InProgress");}}>InProgress</Dropdown.Item>
+                                                <Dropdown.Item onClick={() => {handleBulk("In Progress");}}>InProgress</Dropdown.Item>
                                                 <Dropdown.Item onClick={() => {handleBulk("Completed");}} >Finished</Dropdown.Item>
                                             </DropdownButton>
                                         </div>
                                     
                                         <DropdownButton id="dropdown-basic-button" title={sea.sort}>
-                                            <Dropdown.Item onClick={() => {handleSort("Title");}}>Title</Dropdown.Item>
-                                            <Dropdown.Item onClick={() => {handleSort("Due Date");}} >Due Date</Dropdown.Item>
-                                            <Dropdown.Item onClick={() => {handleSort("Assigned By");}} >Assigned By</Dropdown.Item>
-                                            <Dropdown.Item onClick={() => {handleSort("Assigned To");}}>Assigned To</Dropdown.Item>
-                                            <Dropdown.Item onClick={() => {handleSort("Status");}} >Status</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => {handleSort("title");}}>Title</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => {handleSort("due_date");}} >Due Date</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => {handleSort("assigned_by");}} >Assigned By</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => {handleSort("assigned_to");}}>Assigned To</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => {handleSort("status");}} >Status</Dropdown.Item>
                                         </DropdownButton>
                                     </div>
                                    

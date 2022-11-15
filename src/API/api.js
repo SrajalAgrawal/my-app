@@ -177,6 +177,7 @@ export default new (class AuthService {
 
     async me() {
       let token = JSON.parse(localStorage.getItem("user"));
+      console.log('token', token)
       let data = null;
       let config = {
         params: {},
@@ -185,6 +186,7 @@ export default new (class AuthService {
         },
       };    
       const res = await axios.post(api_url + "user", data, config);
+      console.log('res', res)
       return res;
     }
 
@@ -240,31 +242,33 @@ export default new (class AuthService {
           Authorization: "Bearer " + token,
         },
       };
-      const res = await axios.post(api_url + "showTasks", data, config);
+      const res = await axios.post(api_url + "getTasks", data, config);
       return res;
     }
 
-    async getAllTasks(page,search,sort) {
-      let token = JSON.parse(localStorage.getItem("user"));
+    // async getAllTasks(page,search,sort) {
+    //   let token = JSON.parse(localStorage.getItem("user"));
   
-      let data = null;
-      let config = {
-        params: {
-          page,
-          search,
-          sort,
-        },
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      };
-        let res = await axios.post(api_url + "showAllTasks", data, config);
-        return res;
-    }
+    //   let data = null;
+    //   let config = {
+    //     params: {
+    //       page,
+    //       search,
+    //       sort,
+    //     },
+    //     headers: {
+    //       Authorization: "Bearer " + token,
+    //     },
+    //   };
+    //     let res = await axios.post(api_url + "showAllTasks", data, config);
+    //     return res;
+    // }
 
     async stats(type) {
       let token = JSON.parse(localStorage.getItem("user"));
-  
+      
+      if(type=='to') {type='assigned_to'};
+      if(type=='by') {type='assigned_by'};
   
       let data = null;
       let config = {

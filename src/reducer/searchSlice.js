@@ -4,7 +4,7 @@ export const searchSlice = createSlice({
   name: "search",
   initialState: {
     data: "",
-    sort:"Title"
+    sort:"title"
   },
 
   reducers: {
